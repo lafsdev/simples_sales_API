@@ -25,7 +25,7 @@ public class VendasApplication {
             List<Cliente> todosClientes = clientes.obterTodos();
             todosClientes.forEach(System.out::println);
 
-            /*System.out.println("Atualizando clientes.");
+            System.out.println("Atualizando clientes.");
             todosClientes.forEach(c -> {
                 c.setNome(c.getNome() + " atualizado.");
                 clientes.atualizar(c);
@@ -48,8 +48,7 @@ public class VendasApplication {
                 System.out.println("Nenhum cliente encontrado");
             } else {
                 todosClientes.forEach(System.out::println);
-            }*/
-
+            }
 
         };
     }
