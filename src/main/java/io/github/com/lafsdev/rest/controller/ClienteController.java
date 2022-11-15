@@ -5,7 +5,6 @@ import io.github.com.lafsdev.domain.repository.Clientes;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -26,9 +25,8 @@ public class ClienteController {
         return clientes.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
     }
 
-
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Cliente save(@RequestBody Cliente cliente) {
         return clientes.save(cliente);
     }
@@ -60,14 +58,15 @@ public class ClienteController {
     }
 
     @GetMapping
-    public ResponseEntity find(Cliente filtro) {
-        ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase().withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+    public List<Cliente> find(Cliente filtro) {
+        ExampleMatcher matcher = ExampleMatcher
+                .matching()
+                .withIgnoreCase()
+                .withStringMatcher(
+                        ExampleMatcher.StringMatcher.CONTAINING);
 
         Example example = Example.of(filtro, matcher);
-
-        List<Cliente> lista = clientes.findAll(example);
-
-        return ResponseEntity.ok(lista);
+        return clientes.findAll(example);
     }
 
 
