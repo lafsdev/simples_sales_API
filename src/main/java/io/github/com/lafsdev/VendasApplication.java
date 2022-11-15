@@ -1,7 +1,9 @@
 package io.github.com.lafsdev;
 
 import io.github.com.lafsdev.domain.entity.Cliente;
+import io.github.com.lafsdev.domain.entity.Pedido;
 import io.github.com.lafsdev.domain.repository.Clientes;
+import io.github.com.lafsdev.domain.repository.Pedidos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -9,57 +11,33 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
 
 @SpringBootApplication
 @RestController
 public class VendasApplication {
 
     @Bean
-    public CommandLineRunner init(@Autowired Clientes clientes) {
+    public CommandLineRunner init(@Autowired Clientes clientes, @Autowired Pedidos pedidos) {
         return args -> {
             System.out.println("Salvando clientes");
-            clientes.save(new Cliente("Leandro Alves de Fontes Silva"));
-            clientes.save(new Cliente("Cliente 2"));
+            Cliente c = new Cliente("Leandro Alves de Fontes Silva");
+            clientes.save(c);
 
-            System.out.println("Pesquisando com query Methods HQL");
-            List<Cliente> result = clientes.encontrarPorNomeHQL("Leandro");
-            result.forEach(System.out::println);
+            Pedido p = new Pedido();
+            p.setCliente(c);
+            p.setDataPedido(LocalDate.now());
+            p.setTotal(BigDecimal.valueOf(100));
 
+            pedidos.save(p);
 
-            System.out.println("Pesquisando com query Methods SQL");
-            List<Cliente> result2 = clientes.encontrarPorNomeSQL("Leandro");
-            result2.forEach(System.out::println);
+//            Cliente cliente = clientes.findClienteFetchPedidos(c.getId());
+//            System.out.println(cliente);
+//            System.out.println(cliente.getPedidos());
 
-
-            List<Cliente> todosClientes = clientes.findAll();
-            todosClientes.forEach(System.out::println);
-
-            System.out.println("Atualizando clientes.");
-            todosClientes.forEach(c -> {
-                c.setNome(c.getNome() + " atualizado.");
-                clientes.save(c);
-            });
-            todosClientes = clientes.findAll();
-            todosClientes.forEach(System.out::println);
-
-            System.out.println("Buscando clientes.");
-            clientes.findByNomeLike("Cli").forEach(System.out::println);
-
-            todosClientes = clientes.findAll();
-            todosClientes.forEach(System.out::println);
-
-            System.out.println("Deletando clientes");
-            clientes.findAll().forEach(c -> {
-                clientes.delete(c);
-            });
-            todosClientes = clientes.findAll();
-            if (todosClientes.isEmpty()) {
-                System.out.println("Nenhum cliente encontrado");
-            } else {
-                todosClientes.forEach(System.out::println);
-            }
-
+            pedidos.findByCliente(c).forEach(System.out::println);
         };
     }
 
