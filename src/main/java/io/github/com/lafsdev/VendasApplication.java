@@ -22,6 +22,16 @@ public class VendasApplication {
             clientes.save(new Cliente("Leandro Alves de Fontes Silva"));
             clientes.save(new Cliente("Cliente 2"));
 
+            System.out.println("Pesquisando com query Methods HQL");
+            List<Cliente> result = clientes.encontrarPorNomeHQL("Leandro");
+            result.forEach(System.out::println);
+
+
+            System.out.println("Pesquisando com query Methods SQL");
+            List<Cliente> result2 = clientes.encontrarPorNomeSQL("Leandro");
+            result2.forEach(System.out::println);
+
+
             List<Cliente> todosClientes = clientes.findAll();
             todosClientes.forEach(System.out::println);
 
