@@ -36,7 +36,7 @@ public class ProdutoController {
     public void delete(@PathVariable Integer id) {
         produtos.findById(id).map(produto -> {
             produtos.delete(produto);
-            return produto;
+            return Void.TYPE;
         }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
     }
 
@@ -46,10 +46,9 @@ public class ProdutoController {
         produtos.findById(id).map(produtoExistente -> {
             produto.setId(produtoExistente.getId());
             produtos.save(produto);
-            return produtoExistente;
+            return produto;
         }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
     }
-
     @GetMapping
     public List<Produto> find(Produto filtro) {
         ExampleMatcher matcher = ExampleMatcher

@@ -37,7 +37,7 @@ public class ClienteController {
         clientes.findById(id)
                 .map(cliente -> {
                     clientes.delete(cliente);
-                    return cliente;
+                    return Void.TYPE;
                 })
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Cliente não encontrado"));
