@@ -4,6 +4,7 @@ import io.github.com.lafsdev.domain.entity.Cliente;
 import io.github.com.lafsdev.domain.entity.ItemPedido;
 import io.github.com.lafsdev.domain.entity.Pedido;
 import io.github.com.lafsdev.domain.entity.Produto;
+import io.github.com.lafsdev.domain.enums.StatusPedido;
 import io.github.com.lafsdev.domain.repository.Clientes;
 import io.github.com.lafsdev.domain.repository.ItemsPedido;
 import io.github.com.lafsdev.domain.repository.Pedidos;
@@ -40,6 +41,7 @@ public class PedidoServiceImpl implements PedidoService {
         pedido.setTotal(dto.getTotal());
         pedido.setDataPedido(LocalDate.now());
         pedido.setCliente(cliente);
+        pedido.setStatus(StatusPedido.REALIZADO);
 
         List<ItemPedido> itemPedido = converterItems(pedido, dto.getItems());
         pedidosRepository.save(pedido);
