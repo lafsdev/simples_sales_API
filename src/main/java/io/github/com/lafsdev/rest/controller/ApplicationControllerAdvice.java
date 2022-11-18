@@ -1,5 +1,6 @@
 package io.github.com.lafsdev.rest.controller;
 
+import io.github.com.lafsdev.exception.PedidoNaoEncontradoException;
 import io.github.com.lafsdev.exception.RegraNegocioException;
 import io.github.com.lafsdev.rest.ApiErrors;
 import org.springframework.http.HttpStatus;
@@ -16,5 +17,13 @@ public class ApplicationControllerAdvice {
         String mensagemErro = ex.getMessage();
         return new ApiErrors(mensagemErro);
     }
+
+    @ExceptionHandler(PedidoNaoEncontradoException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiErrors handlePedidoNotFoundException(RegraNegocioException ex) {
+        String mensagemErro = ex.getMessage();
+        return new ApiErrors(mensagemErro);
+    }
+
 
 }

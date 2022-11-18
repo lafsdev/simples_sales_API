@@ -2,6 +2,8 @@ package io.github.com.lafsdev.rest.controller;
 
 import io.github.com.lafsdev.domain.entity.ItemPedido;
 import io.github.com.lafsdev.domain.entity.Pedido;
+import io.github.com.lafsdev.domain.enums.StatusPedido;
+import io.github.com.lafsdev.rest.dto.AtualizacaoStatusPedidoDTO;
 import io.github.com.lafsdev.rest.dto.InformacaoItemPedidoDTO;
 import io.github.com.lafsdev.rest.dto.InformacoesPedidoDTO;
 import io.github.com.lafsdev.rest.dto.PedidoDTO;
@@ -40,6 +42,13 @@ public class PedidoController {
 
     private InformacoesPedidoDTO converter(Pedido pedido) {
         return InformacoesPedidoDTO.builder().codigo(pedido.getId()).dataPedido(pedido.getDataPedido().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))).cpf(pedido.getCliente().getCpf()).nomeCliente(pedido.getCliente().getNome()).total(pedido.getTotal()).status(pedido.getStatus().name()).items(converter(pedido.getItens())).build();
+    }
+
+    @PatchMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateStatus(@PathVariable Integer id, @RequestBody AtualizacaoStatusPedidoDTO dto) {
+        String novoStatus = dto.getNovoStatus();
+        service.atualizaStatus(id, StatusPedido.valueOf(novoStatus));
     }
 
     private List<InformacaoItemPedidoDTO> converter(List<ItemPedido> items) {

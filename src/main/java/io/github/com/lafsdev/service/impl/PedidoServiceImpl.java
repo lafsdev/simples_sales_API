@@ -9,6 +9,7 @@ import io.github.com.lafsdev.domain.repository.Clientes;
 import io.github.com.lafsdev.domain.repository.ItemsPedido;
 import io.github.com.lafsdev.domain.repository.Pedidos;
 import io.github.com.lafsdev.domain.repository.Produtos;
+import io.github.com.lafsdev.exception.PedidoNaoEncontradoException;
 import io.github.com.lafsdev.exception.RegraNegocioException;
 import io.github.com.lafsdev.rest.dto.ItemPedidoDTO;
 import io.github.com.lafsdev.rest.dto.PedidoDTO;
@@ -53,6 +54,15 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public Optional<Pedido> obterPedidoCompleto(Integer id) {
         return pedidosRepository.findByIdFetchItens(id);
+    }
+
+    @Override
+    @Transactional
+    public void atualizaStatus(Integer id, StatusPedido statusPedido) {
+        pedidosRepository.findById(id).map(pedido -> {
+            pedido.setStatus(statusPedido);
+            return pedidosRepository.save(pedido);
+        }).orElseThrow(() -> new PedidoNaoEncontradoException());
     }
 
     private List<ItemPedido> converterItems(Pedido pedido, List<ItemPedidoDTO> items) {
