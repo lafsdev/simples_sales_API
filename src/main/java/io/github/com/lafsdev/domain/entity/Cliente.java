@@ -21,12 +21,12 @@ public class Cliente {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Integer id;
-    @NotEmpty(message = "Campo nome é obrigatório")
+    @NotEmpty(message = "{campo.nome.obrigatorio}")
     @Column(name = "nome", length = 100)
     private String nome;
-    @NotEmpty(message = "CPF é obrigatório")
+    @NotEmpty(message = "{campo.cpf.obrigatorio}")
     @Column(name = "cpf", length = 11)
-    @CPF(message = "Informe um CPF válido")
+    @CPF(message = "{campo.cpf.invalido}")
     private String cpf;
     @JsonIgnore
     @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
