@@ -1,5 +1,6 @@
 package io.github.com.lafsdev.rest.dto;
 
+import io.github.com.lafsdev.validation.NotEmptyList;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,5 +18,6 @@ public class PedidoDTO {
     private Integer cliente;
     @NotNull(message = "Campo Total do Pedido é obrigatório")
     private BigDecimal total;
+    @NotEmptyList
     private List<ItemPedidoDTO> items;
 }
