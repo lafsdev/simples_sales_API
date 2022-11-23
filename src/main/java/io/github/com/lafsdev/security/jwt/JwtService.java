@@ -1,4 +1,4 @@
-package io.github.com.lafsdev;
+package io.github.com.lafsdev.security.jwt;
 
 import io.github.com.lafsdev.domain.entity.Usuario;
 import io.jsonwebtoken.Claims;
