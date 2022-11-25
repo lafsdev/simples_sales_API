@@ -34,9 +34,9 @@ public class UsuarioController {
     }
 
     @PostMapping("/auth")
-    public TokenDTO autenticar(@RequestBody CredenciaisDTO credencial) {
+    public TokenDTO autenticar(@RequestBody CredenciaisDTO credenciais) {
         try {
-            Usuario usuario = Usuario.builder().login(credencial.getLogin()).senha(credencial.getSenha()).build();
+            Usuario usuario = Usuario.builder().login(credenciais.getLogin()).senha(credenciais.getSenha()).build();
             UserDetails usuarioAutenticado = usuarioService.autenticar(usuario);
             String token = jwtService.gerarToken(usuario);
             return new TokenDTO(usuario.getLogin(), token);

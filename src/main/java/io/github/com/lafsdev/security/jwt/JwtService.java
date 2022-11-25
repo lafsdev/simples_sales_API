@@ -16,9 +16,9 @@ import java.util.Date;
 @Service
 public class JwtService {
 
-    @Value("{security.jwt.expiracao}")
+    @Value("${security.jwt.expiracao}")
     private String expiracao;
-    @Value("{security.jwt.chave-assinatura}")
+    @Value("${security.jwt.chave-assinatura}")
     private String chaveAssinatura;
 
     public String gerarToken(Usuario usuario) throws ExpiredJwtException {
@@ -33,13 +33,14 @@ public class JwtService {
         try {
             Claims claims = obterClaims(token);
             Date dataExpiracao = claims.getExpiration();
-            LocalDateTime data = dataExpiracao.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+            LocalDateTime data =
+                    dataExpiracao.toInstant()
+                            .atZone(ZoneId.systemDefault()).toLocalDateTime();
             return !LocalDateTime.now().isAfter(data);
         } catch (Exception e) {
             return false;
         }
     }
-
     public String obterLoginUsuario(String token) throws ExpiredJwtException {
         return (String) obterClaims(token).getSubject();
     }
