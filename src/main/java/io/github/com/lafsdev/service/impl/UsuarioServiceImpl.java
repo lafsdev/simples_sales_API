@@ -32,6 +32,7 @@ public class UsuarioServiceImpl implements UserDetailsService {
         if (senhasBatem) {
             return user;
         }
+
         throw new SenhaInvalidaException();
     }
 
@@ -39,8 +40,10 @@ public class UsuarioServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Usuario usuario = usuarioRepository.findByLogin(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado na base de dados."));
+
         String[] roles = usuario.isAdmin() ?
                 new String[]{"ADMIN", "USER"} : new String[]{"USER"};
+
         return User
                 .builder()
                 .username(usuario.getLogin())

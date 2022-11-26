@@ -23,19 +23,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UsuarioServiceImpl usuarioService;
     @Autowired
-    JwtService jwtService;
+    private JwtService jwtService;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    public OncePerRequestFilter jwtFilter(){
-        return new JwtAuthFilter(jwtService,usuarioService);
+    @Bean
+    public OncePerRequestFilter jwtFilter() {
+        return new JwtAuthFilter(jwtService, usuarioService);
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        // auth.inMemoryAuthentication().passwordEncoder(passwordEncoder()).withUser("fulano").password(passwordEncoder().encode("123")).roles("USER");
         auth.userDetailsService(usuarioService).passwordEncoder(passwordEncoder());
     }
 
@@ -71,5 +72,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/swagger-ui.html",
                 "/webjars/**");
     }
-
 }
